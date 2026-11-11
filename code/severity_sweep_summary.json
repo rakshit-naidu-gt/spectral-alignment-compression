@@ -1,0 +1,74 @@
+[
+  {
+    "target_rel_delta": 0.01,
+    "achieved_rel_delta": 0.01024912168694178,
+    "n": 48,
+    "n_flip_seeds": 3,
+    "rho": {
+      "pred_full": 0.9971775944420321,
+      "pred_first": 0.9967433782023448,
+      "pred_diag": 0.9700390794615718,
+      "pred_isotropic": 0.0959617889709075
+    },
+    "flip_acc": {
+      "pred_full": 1.0,
+      "pred_full_n": 12,
+      "pred_isotropic": 0.5,
+      "pred_isotropic_n": 12
+    }
+  },
+  {
+    "target_rel_delta": 0.03,
+    "achieved_rel_delta": 0.02989433749399603,
+    "n": 48,
+    "n_flip_seeds": 3,
+    "rho": {
+      "pred_full": 0.9009986973512809,
+      "pred_first": 0.9017585757707339,
+      "pred_diag": 0.8933999131567519,
+      "pred_isotropic": -0.037993920972644375
+    },
+    "flip_acc": {
+      "pred_full": 0.8333333333333334,
+      "pred_full_n": 12,
+      "pred_isotropic": 0.25,
+      "pred_isotropic_n": 12
+    }
+  },
+  {
+    "target_rel_delta": 0.1,
+    "achieved_rel_delta": 0.09998756910705942,
+    "n": 48,
+    "n_flip_seeds": 3,
+    "rho": {
+      "pred_full": 0.973295701259227,
+      "pred_first": 0.9348675640468952,
+      "pred_diag": 0.9315023881893183,
+      "pred_isotropic": -0.2505427702996092
+    },
+    "flip_acc": {
+      "pred_full": 0.8333333333333334,
+      "pred_full_n": 12,
+      "pred_isotropic": 0.25,
+      "pred_isotropic_n": 12
+    }
+  },
+  {
+    "target_rel_delta": 0.25,
+    "achieved_rel_delta": 0.25003097057163787,
+    "n": 48,
+    "n_flip_seeds": 3,
+    "rho": {
+      "pred_full": 0.9756838905775076,
+      "pred_first": 0.8596396005210595,
+      "pred_diag": 0.8789622231871471,
+      "pred_isotropic": -0.336734693877551
+    },
+    "flip_acc": {
+      "pred_full": 0.5833333333333334,
+      "pred_full_n": 12,
+      "pred_isotropic": 0.25,
+      "pred_isotropic_n": 12
+    }
+  }
+]

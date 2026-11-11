@@ -1,0 +1,28 @@
+# Downloaded datasets (regenerate via the data-loading scripts)
+code/data/
+code/data_waterbirds/
+
+# Trained model checkpoints (regenerate by rerunning run_gate*.py / train.py)
+*.pt
+
+# Python
+__pycache__/
+*.pyc
+
+# LaTeX build artifacts (regenerate with pdflatex + bibtex)
+*.aux
+*.bbl
+*.blg
+*.log
+*.synctex.gz
+*.out
+*.fls
+*.fdb_latexmk
+
+# Editor backups / scratch
+main_backup_before_voice_rewrite.tex
+
+# Unrelated scratch content not part of this project
+math-proof-solo/
+template_extract/
+.review/

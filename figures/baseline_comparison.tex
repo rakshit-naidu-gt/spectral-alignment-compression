@@ -1,0 +1,123 @@
+% figures/baseline_comparison.tex
+% Baseline comparison: which predictor identifies the group a compression
+% mechanism harms most? Left: flip-case accuracy (12 flip cases, 4 mechanisms).
+% Right: pooled Spearman correlation, predicted vs. actual per-group loss change
+% (48 seed x mechanism x group points).
+% Source: code/baseline_compare_results.json
+%
+% Requires in the preamble of main.tex:
+%   \usepackage{pgfplots}
+%   \pgfplotsset{compat=1.18}        % any compat >= 1.11 works
+%   \usetikzlibrary{patterns}
+%
+% Usage (inside your figure environment):
+%   \centering
+%   \input{figures/baseline_comparison.tex}
+%
+% Encoding is redundant so the figure works in grayscale/B&W print:
+%   full       = dark blue   (Okabe-Ito #0072B2), solid fill
+%   diagonal   = sky blue    (Okabe-Ito #56B4E9), diagonal hatching
+%   first-order= bluish green(Okabe-Ito #009E73), horizontal hatching
+%   isotropic  = orange      (Okabe-Ito #E69F00), crosshatching
+%   norm-bound = light gray, dots
+% Each bar is also identified by its x-axis label. The three direction-aware
+% predictors (full, diagonal, first-order) are statistically indistinguishable
+% from one another and are visually grouped together; the two magnitude-only
+% predictors (isotropic, norm-bound) are grouped on the right.
+\definecolor{bcOurs}{HTML}{0072B2}%
+\definecolor{bcDiag}{HTML}{56B4E9}%
+\definecolor{bcFirst}{HTML}{009E73}%
+\definecolor{bcIso}{HTML}{E69F00}%
+\definecolor{bcNorm}{HTML}{BBBBBB}%
+\begin{tikzpicture}
+  \pgfplotsset{
+    bcpanel/.style={
+      width=2.85in,
+      height=2.05in,
+      scale only axis=false,
+      ybar,
+      bar width=0.27in,
+      symbolic x coords={full,diag,first,iso,norm},
+      xmin=full, xmax=norm,
+      xtick={full,diag,first,iso,norm},
+      xticklabels={{Full\\(HVP)},{Diagonal\\Hessian},{First-\\order only},{Isotropic\\(Liu et al.)},{Norm-\\bound}},
+      xticklabel style={align=center, font=\scriptsize},
+      x tick label style={text height=1.5ex},
+      enlarge x limits=0.13,
+      tick label style={font=\scriptsize},
+      ylabel style={font=\small},
+      title style={font=\small, yshift=-1ex},
+      ymajorgrids,
+      grid style={gray!25, line width=0.3pt},
+      major x tick style={draw=none},
+      axis line style={gray!70},
+      nodes near coords,
+      nodes near coords align=vertical,
+      point meta=explicit symbolic,
+      nodes near coords style={font=\scriptsize, align=center},
+      every axis plot/.append style={bar shift=0pt, draw=black, line width=0.5pt},
+    },
+  }
+
+  % ---------------- Left panel: flip-case accuracy ----------------
+  \begin{axis}[
+      bcpanel,
+      name=acc,
+      title={(a) Flip-case accuracy},
+      ylabel={Accuracy (\%)},
+      ymin=0, ymax=114,
+      ytick={0,25,50,75,100},
+    ]
+    \addplot[fill=bcOurs]
+      coordinates {(full,83.3) [{83.3\%\\[-0.3ex](10/12)}]};
+    \addplot[fill=bcDiag, postaction={pattern=north east lines}]
+      coordinates {(diag,83.3) [{83.3\%\\[-0.3ex](10/12)}]};
+    \addplot[fill=bcFirst, postaction={pattern=horizontal lines}]
+      coordinates {(first,83.3) [{83.3\%\\[-0.3ex](10/12)}]};
+    \addplot[fill=bcIso, postaction={pattern=crosshatch}]
+      coordinates {(iso,25.0)  [{25.0\%\\[-0.3ex](3/12)}]};
+    \addplot[fill=bcNorm, postaction={pattern=dots}]
+      coordinates {(norm,25.0) [{25.0\%\\[-0.3ex](3/12)}]};
+    % Chance level: 4 groups -> 25%
+    \draw[densely dashed, black!70, line width=0.6pt]
+      ({rel axis cs:0,0} |- {axis cs:full,25}) -- ({rel axis cs:1,0} |- {axis cs:full,25});
+    % Key for the dashed line, placed in the empty upper-right region
+    \draw[densely dashed, black!70, line width=0.6pt]
+      ([xshift=-0.30in]axis cs:iso,95) -- ([xshift=-0.05in]axis cs:iso,95)
+      node[right, font=\scriptsize, text=black!80] {chance (25\%)};
+    % Brace calling out that the three direction-aware predictors tie
+    \draw[decorate, decoration={brace, amplitude=4pt, mirror}, black!60]
+      (axis cs:full,-6) -- (axis cs:first,-6)
+      node[midway, below, yshift=-5pt, font=\scriptsize, align=center, text=black!70]
+      {direction-aware: statistically tied};
+  \end{axis}
+
+  % ---------------- Right panel: pooled Spearman correlation ----------------
+  \begin{axis}[
+      bcpanel,
+      at={(acc.outer east)}, anchor=outer west, xshift=0.05in,
+      title={(b) Spearman $\rho$ (predicted vs.\ actual)},
+      ylabel={Spearman $\rho$},
+      ymin=-0.4, ymax=0.98,
+      ytick={-0.25,0,0.25,0.5,0.75},
+      yticklabel style={/pgf/number format/fixed, /pgf/number format/precision=2},
+    ]
+    \addplot[fill=bcOurs]
+      coordinates {(full,0.901) [0.901]};
+    \addplot[fill=bcDiag, postaction={pattern=north east lines}]
+      coordinates {(diag,0.901) [0.901]};
+    \addplot[fill=bcFirst, postaction={pattern=horizontal lines}]
+      coordinates {(first,0.904) [0.904]};
+    % Negative, non-significant bar: put its value label below the bar end
+    \addplot[fill=bcIso, postaction={pattern=crosshatch},
+              nodes near coords style={anchor=north}]
+      coordinates {(iso,-0.041) [{$-0.041$\\[-0.3ex](n.s.)}]};
+    % Zero reference line
+    \draw[black!80, line width=0.5pt]
+      ({rel axis cs:0,0} |- {axis cs:full,0}) -- ({rel axis cs:1,0} |- {axis cs:full,0});
+    % Norm-bound outputs only a group ranking, not per-group loss changes
+    \node[font=\scriptsize, align=center, text=black!70, fill=white, inner sep=1.5pt,
+          anchor=south] at (axis cs:norm,0.04)
+      {n/a\\[-0.3ex](ranking\\[-0.3ex]only)};
+  \end{axis}
+\end{tikzpicture}%
